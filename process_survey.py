@@ -1,15 +1,16 @@
 #!/usr/bin/env python
 
-VERSION = "0.2.0"
+VERSION = "0.3.0"
 
 import re, random, sys, itertools, string, csv, os, difflib, subprocess
 import numpy as np
+import argparse
 
 ######################################################################
 ######################################################################
 # Configuration
 
-FILENAME_PREFIX = "tam251_"
+FILENAME_PREFIX = "tam212_"
 
 N_a = 5 # maximum number of answers per question
 LAST_SCANTRON_QUESTION_NUMBER = 96
@@ -37,28 +38,26 @@ PLOT_STYLE = "bar"
 ######################################################################
 
 def main():
-    if len(sys.argv) != 2:
-        print("process_questions version %s" % VERSION)
-        print("")
-        print("usage: process_questions <command>")
-        print("")
-        print("<command> is:")
-        print("   proc-report    process the question and generate report")
-        sys.exit(0)
-
-    if sys.argv[1] == "proc-report":
-        init_logging(LOG_PROC_REPORT_FILENAME)
-        log_and_print("process_questions version %s" % VERSION)
-        library = read_library(LIBRARY_FILENAME)
-        N_q = sum([len(zone.questions) for zone in library.zones])
-        (t, a) = read_scantrons(SCANTRON_FILENAME, N_q)
-        write_answers(ANSWERS_FILENAME, library, t, a, N_a)
-        d = generate_statistics(RAW_STATS_PREFIX, t, a, N_a)
-        write_statistics(REPORT_FILENAME, library, d)
-    else:
-        print("ERROR: unrecognized command: %s" % sys.argv[1])
-        print("valid commands are \"proc-report\"")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("-q", "--question", help="filter by this question number (1, 2, ...)", type=int)
+    parser.add_argument("-a", "--answer", help="filter to only include this answer to the specified question (A to F)", choices=['A', 'B', 'C', 'D', 'E'])
+    args = parser.parse_args()
+    if (args.question is not None and args.answer is None) \
+       or (args.question is None and args.answer is not None):
+        print("ERROR: must specify --question and --answer together");
+        parser.print_help()
         sys.exit(1)
+
+    init_logging(LOG_PROC_REPORT_FILENAME)
+    log_and_print("process_questions version %s" % VERSION)
+    library = read_library(LIBRARY_FILENAME)
+    N_q = sum([len(zone.questions) for zone in library.zones])
+    a = read_scantrons(SCANTRON_FILENAME, N_q)
+    if args.question is not None:
+        a = filter_scantrons(a, args.question, args.answer)
+    write_answers(ANSWERS_FILENAME, library, a, N_a)
+    d = generate_statistics(RAW_STATS_PREFIX, a, N_a)
+    write_statistics(REPORT_FILENAME, library, d)
 
 ######################################################################
 ######################################################################
@@ -293,15 +292,13 @@ def read_library(input_filename):
 ######################################################################
 
 def read_scantrons(input_filename, N_q):
-    """(t, a) = read_scantrons(input_filename, N_q)
+    """a = read_scantrons(input_filename, N_q)
 
     Read the scantron data arrays from scantron.dat.
 
-    t[s] = TA number for student s
     a[s,q] = answer given by student s to question q
     """
     log_and_print("Reading Scantron file: %s" % input_filename)
-    t_data = []
     a_data = []
     with open(input_filename, "r") as in_f:
         for (i_line, line) in enumerate(in_f):
@@ -347,20 +344,44 @@ def read_scantrons(input_filename, N_q):
             log("%s:%s: section %s"
                 % (input_filename, i_line + 1, section))
 
-            t_data.append(section)
             a_data.append(list(answers))
 
-    t = np.array(t_data, dtype=object)
     a = np.array(a_data, dtype=str)
     log_array(a, "a", ["N_s", "N_q"])
     log("Successfully completed reading Scantron file")
-    return (t, a)
+    return a
 
 ######################################################################
 ######################################################################
 
-def write_answers(output_filename, library, t, a, N_a):
-    """write_answers(output_filename, library, t, a, N_a)
+def filter_scantrons(a, filter_q, filter_a):
+    """new_a = filter_scantrons(a, filter_q, filter_a)
+
+    Only keep scantrons which have question number 'filter_q' with
+    answer equal to 'answer_q'.
+
+    new_a[s,q] = answer given by student s to question q
+    """
+    (N_s, N_q) = a.shape
+    qi = filter_q - 1
+    if qi < 0 or qi >= N_q:
+        raise Exception("filter_q = %d out of range (must be between 1 and %d)" % (filter_q, N_q))
+    new_a_data = []
+    for si in range(N_s):
+        if a[si, qi] == filter_a:
+            new_a_data.append(a[si,:])
+    if len(new_a_data) == 0:
+        raise Exception("after filtering no scantrons were left")
+    new_a = np.array(new_a_data, dtype=str)
+    log_array(new_a, "new_a", ["N_s", "N_q"])
+    log("Successfully completed filtering Scantron data")
+    return new_a
+
+######################################################################
+######################################################################
+
+def write_answers(output_filename, library, a, N_a):
+    """write_answers(output_filename, library, a, N_a)
 
     Write per-student answers to the answers.csv file.
     """
@@ -431,8 +452,8 @@ def write_csv(output_filename, headers, data, index_formats=None):
                 writer.writerow(row)
     log("Successfully completed writing statistics file")
 
-def generate_statistics(output_prefix, t, a, N_a):
-    """d = generate_statistics(output_prefix, t, a, N_a)
+def generate_statistics(output_prefix, a, N_a):
+    """d = generate_statistics(output_prefix, a, N_a)
 
     d is a structure containing all data arrays and all generated
     statistics arrays.
@@ -446,7 +467,6 @@ def generate_statistics(output_prefix, t, a, N_a):
     (d.N_s, d.N_q) = a.shape
     d.N_a = N_a
 
-    d.t = t
     d.a = a
 
     d.n_s_qa = np.zeros((d.N_q, d.N_a), dtype=int)
