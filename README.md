@@ -19,18 +19,18 @@ pdflatex tam212_sp18_survey.tex
 
 2. Print copies of `tam212_sp18_survey.pdf` for each student:
 
-2. Give each student a printed question page and a blank Scantron form.
+2. Give each student a printed survey and a blank Scantron form.
 
-3. Students complete the multiple-choice survey questions on the Scantron form, and fill out the written free-response questions on the question form.
+3. Students complete the multiple-choice survey questions on the Scantron form, and fill out the written free-response questions on the survey page.
 
-4. Collect the Scantron forms together, and separately collect any question pages with written free-response answers. The free-response answers can be processed manually.
+4. Collect the Scantron forms together, and separately collect any survey pages with written free-response answers. The free-response answers can be processed manually.
 
 
 ## Process the Scantrons
 
-1. Take the Scantrons to the scanning facility. Request that the forms be scanned and the "raw .dat file" sent back by email.
+1. Take the Scantrons to the scanning facility. Request that the forms be scanned and the "raw dot-dat file" sent back by email.
 
-2. Get the scanned data file (named something like `jd26936.dat` and rename it to `tam212_sp18_scantron.dat`. It is important that this file has exactly the same prefix as the survey file.
+2. Get the scanned data file (named something like `jd26936.dat`) and rename it to `tam212_sp18_scantron.dat`. It is important that this file has exactly the same prefix as the survey file and ends in `_scantron.dat`.
 
 
 ## Process the survey
