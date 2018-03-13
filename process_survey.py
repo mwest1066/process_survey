@@ -10,7 +10,7 @@ import argparse
 ######################################################################
 # Configuration
 
-FILENAME_PREFIX = "tam212_"
+FILENAME_PREFIX = "example_"
 
 N_a = 5 # maximum number of answers per question
 LAST_SCANTRON_QUESTION_NUMBER = 96
@@ -469,6 +469,7 @@ def generate_statistics(output_prefix, a, N_a):
 
     d.a = a
 
+    # number of responses per question per answer
     d.n_s_qa = np.zeros((d.N_q, d.N_a), dtype=int)
     for si in range(d.N_s):
         for qi in range(d.N_q):
@@ -478,18 +479,22 @@ def generate_statistics(output_prefix, a, N_a):
     write_csv(output_prefix + "_n_s_qa.csv", ["q", "n_s(q,a=%s)"], d.n_s_qa,
               index_formats=['i', 'c'])
 
+    # number of responses per question
     d.n_s_q = d.n_s_qa.sum(axis=1)
     write_csv(output_prefix + "_n_s_q.csv", ["q", "n_s(q)"], d.n_s_q)
 
+    # number of non-responses per question
     d.n_na_q = d.N_s - d.n_s_q
     write_csv(output_prefix + "_n_na_q.csv", ["q", "n_na(q)"], d.n_na_q)
 
+    # average response per question (1 = A, 5 = E)
     d.p_q = np.zeros(d.N_q, dtype=float)
     for qi in range(d.N_q):
         for ai in range(d.N_a):
             d.p_q += (ai + 1) * float(d.n_s_qa[qi,ai]) / d.n_s_q[qi]
     write_csv(output_prefix + "_p_q.csv", ["q", "p(q)"], d.p_q)
 
+    # fraction of responses per question per answer
     d.r_s_qa = np.zeros((d.N_q, d.N_a), dtype=float)
     for qi in range(d.N_q):
         for ai in range(d.N_a):
@@ -497,6 +502,7 @@ def generate_statistics(output_prefix, a, N_a):
     write_csv(output_prefix + "_r_s_qa.csv", ["q", "r_s(q,a=%s)"], d.r_s_qa,
               index_formats=['i', 'c'])
 
+    # fraction of non-responses per question
     d.r_na_q = np.zeros(d.N_q, dtype=float)
     for qi in range(d.N_q):
         d.r_na_q[qi] = float(d.n_na_q[qi]) / d.N_s

@@ -1,0 +1,97 @@
+\documentclass{article}
+\usepackage[margin=2cm]{geometry}
+\usepackage{longtable}
+
+\newcounter{question}
+\setcounter{question}{0}
+\newenvironment{zone}[1]{\paragraph{#1}\ \\ \begin{tabular}{p{9cm}p{3cm}cl}}{\end{tabular}}
+\newcommand{\question}[3]{\refstepcounter{question} \raggedright \arabic{question}. #1 & \raggedleft #2 & A B C D E & #3 \\}
+
+\begin{document}
+
+\begin{center}
+  \Large \bf TAM 212, Spring 2018, Early Feedback Form
+\end{center}
+
+% Sections and questions common to all 2XX classes
+
+\begin{zone}{Instructors and Lecture Quality}
+\question{Who is your instructor? \\ \hspace{4ex} A. Prof. West \\ \hspace{4ex} B. Prof. Matlack}{}{}
+\question{Overall course quality}{Excellent}{Very Poor}
+\question{Lecture pace}{Too fast}{Too slow}
+\question{My instructor's grammar and choice of words make it harder for me to understand the material}{Strongly Agree}{Strongly Disagree}
+\question{Lectures help me better understand the course material}{Strongly Agree}{Strongly Disagree}
+\question{I make use of posted lecture notes}{Strongly Agree}{Strongly Disagree}
+\end{zone}
+
+\begin{zone}{Course Resources}
+\question{I have adequate access to the professor(s)}{Strongly Agree}{Strongly Disagree}
+\question{I go to office hours for help}{Often}{Never}
+\question{I need more office hours than are offered}{Strongly Agree}{Strongly Disagree}
+\question{Office hours are too crowded}{Strongly Agree}{Strongly Disagree}
+\question{I look for help on Piazza}{Often}{Never}
+\question{I get answers to my questions from Piazza}{Strongly Agree}{Strongly Disagree}
+\question{The posted reference materials are useful}{Strongly Agree}{Strongly Disagree}
+\end{zone}
+
+\begin{zone}{Online Homework}
+\question{I find the online homework too difficult}{Strongly Agree}{Strongly Disagree}
+\question{Length of time spent on online homework each week}{1 hour}{5 hours}
+\question{I use MATLAB (or other software) for homework}{Strongly Agree}{Strongly Disagree}
+\question{The homework helps me understand course material}{Strongly Agree}{Strongly Disagree}
+\question{The homework prepares me for the quizzes}{Strongly Agree}{Strongly Disagree}
+\end{zone}
+
+\begin{zone}{Computer-Based Quiz}
+\question{I feel comfortable in the computer testing facility}{Strongly Agree}{Strongly Disagree}
+\question{I think cheating is a problem on the computer-based quizzes}{Strongly Agree}{Strongly Disagree}
+\question{The computer-based quizzes are too long}{Strongly Agree}{Strongly Disagree}
+\question{The computer-based quizzes are too difficult}{Strongly Agree}{Strongly Disagree}
+\end{zone}
+
+\begin{zone}{Discussion Section}
+\question{My group has to wait too long for a TA/CA to come answer our questions}{Strongly Agree}{Strongly Disagree}
+\question{The TA/CA checks to see that our group understands the worksheet rather than looking only at whether we have completed the activity}{Strongly Agree}{Strongly Disagree}
+\question{My group uses a laptop, phone, or tablet to access course references during discussion}{Strongly Agree}{Strongly Disagree}
+\end{zone}
+
+% Course-specific questions
+
+%\begin{zone}{Written Reports}
+%\question{How much time do you spend on each report?}{1 hour}{5 hours}
+%\question{Grading}{Fairly Graded}{Unfairly Graded}
+%\question{Written assignments improve communication and problem solving skills}{Strongly Agree}{Strongly Disagree}
+%\question{I work with others to solve the problems before writing my final submission}{Often}{Never}
+%\question{I think cheating is a problem on the written assignments}{Strongly Agree}{Strongly Disagree}
+%\end{zone}
+
+% No ICQ questions because none have happened yet.
+%\begin{zone}{In-class Quiz}
+%\question{Length}{Too Short}{Too Long}
+%\question{Difficulty}{Too Easy}{Too Difficult}
+%\question{Grading}{Fairly Graded}{Unfairly Graded}
+%\question{The sample problem presented improves my understanding of the material}{Strongly Agree}{Strongly Disagree}
+%\question{I prefer the computer-based quizzes to in-class quizzes}{Strongly Agree}{Strongly Disagree}
+%\end{zone}
+
+\pagebreak
+
+\paragraph{Are there any additional comments or concerns you have about this class?}\ \\
+\framebox{\rule{\textwidth}{0cm}\rule{0cm}{8cm}}
+% \framebox{\rule{\textwidth}{0cm}\rule{0cm}{8cm}}
+
+% Demographic information
+\vspace{11pt}
+\noindent\emph{All questions on this page are optional; you may decline to answer any of the following questions by leaving that entry blank.}
+\begin{zone}{Demographic data} 
+\question{I feel like I'm becoming a member of the engineering community}{Strongly Agree}{Strongly Disagree}
+\question{How long have you been studying at UIUC?\\ \hspace{4ex} A: I am in my first year at UIUC\\ \hspace{4ex} B: I am in my second year at UIUC\\ \hspace{4ex} C: I am in my third year at UIUC\\ \hspace{4ex} D: I am in my fourth year at UIUC\\ \hspace{4ex} E: I am in my fifth year or later at UIUC}{}{}
+\question{Which of the following best describes your gender?\\ \hspace{4ex} A: Female\\ \hspace{4ex} B: Male\\ \hspace{4ex} C: Neither of these options best describes me}{}{}
+\question{Which of the following best describes you? \\ \hspace{4ex} A: African/Black \\ \hspace{4ex} B: Asian \\ \hspace{4ex} C: White/Caucasian \\ \hspace{4ex} D: Native American/Pacific Islander \\ \hspace{4ex} E: None of these options best describes me.}{}{}
+\question{Do you describe yourself as Hispanic? \\ \hspace{4ex} A. Yes \\ \hspace{4ex} B. No}{}{}
+\question{Are you an international student? \\ \hspace{4ex} A. Yes \\ \hspace{4ex} B. No}{}{}
+\question{Is English your first language (i.e. the primary language spoken at home)? \\ \hspace{4ex} A. Yes \\ \hspace{4ex} B. No}{}{}
+\question{Are you a transfer student? \\ \hspace{4ex} A. Yes \\ \hspace{4ex} B. No}{}{}
+\end{zone}
+
+\end{document}
