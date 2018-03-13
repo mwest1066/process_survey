@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-VERSION = "0.3.0"
+VERSION = "0.4.0"
 
 import re, random, sys, itertools, string, csv, os, difflib, subprocess
 import numpy as np
