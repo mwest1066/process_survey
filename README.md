@@ -1,22 +1,23 @@
 # `process_survey.py`
 
-This is a script to do surveys using scantrons. It is used for
-Informal Early Feedback (IEF) surveys in the TAM 2XX courses at UIUC.
+This is a script to do surveys using Scantrons. It is used for Informal Early Feedback (IEF) surveys in the TAM 2XX courses at UIUC.
 
 
-## Question LaTeX library file
+## LaTeX survey file
 
-1. Copy [example_library.tex] and rename it for the appropriate course, e.g., `tam212_sp18_library.tex`.
+1. Copy `example_survey.tex` and rename it for the appropriate course, e.g., `tam212_sp18_survey.tex`.
 
-2. Edit the questions, organizing them into groups with `\begin{zone}...\end{zone}` and using the special command `\question{TEXT}{LEFT_ANSWER}{RIGHT_ANSWER}` for each question. It is important to use these commands exactly as in the same was as in the example file, so that the script can process it correctly later.
+2. Edit the questions, organizing them into groups with `\begin{zone}\end{zone}` and using the special command `\question{TEXT}{LEFT_ANSWER}{RIGHT_ANSWER}` for each question. It is important to use these commands exactly as in the example file, because the Python script looks for questions formatted like this.
 
 
 ## Running the survey
 
-1. Latex the library file and print copies for each student:
+1. Latex the survey file:
 ```
-pdflatex tam212_sp18_library.tex
+pdflatex tam212_sp18_survey.tex
 ```
+
+2. Print copies of `tam212_sp18_survey.pdf` for each student:
 
 2. Give each student a printed question page and a blank Scantron form.
 
@@ -29,14 +30,14 @@ pdflatex tam212_sp18_library.tex
 
 1. Take the Scantrons to the scanning facility. Request that the forms be scanned and the "raw .dat file" sent back by email.
 
-2. Get the scanned data file (named something like `jd26936.dat` and rename it to `tam212_sp18_scantron.dat`. It is important that this file has exactly the same prefix as the library file.
+2. Get the scanned data file (named something like `jd26936.dat` and rename it to `tam212_sp18_scantron.dat`. It is important that this file has exactly the same prefix as the survey file.
 
 
 ## Process the survey
 
 1. Make a directory that contains:
 ```
-tam212_sp18_library.tex
+tam212_sp18_survey.tex
 tam212_sp18_scantron.dat
 process_survey.py
 ```
@@ -71,7 +72,7 @@ tam212_sp18_stats_r_s_qa.csv   # fraction of non-responses per question
 
 ## Optional: filter by the answer to a specfic question
 
-Question 1 in the example library is "Who is your professor?" with options A and B for the two professors. If we want to generate survey statistics for only one of the professors then we can run:
+Question 1 in the example survey is "Who is your professor?" with options A and B for the two professors. If we want to generate survey statistics for only one of the professors then we can run:
 ```
 python -q 1 -a A process_survey.py
 ```
