@@ -74,6 +74,6 @@ tam212_sp18_stats_r_s_qa.csv   # fraction of non-responses per question
 
 Question 1 in the example survey is "Who is your professor?" with options A and B for the two professors. If we want to generate survey statistics for only one of the professors then we can run:
 ```
-python -q 1 -a A process_survey.py
+python process_survey.py -q 1 -a A
 ```
 This generates output that only includes Scantrons where the answer to Question 1 was A.
